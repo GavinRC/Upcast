@@ -1,6 +1,6 @@
 #include <iostream>
 #include <cmath>
-
+#include <memory> // low level memory management
 // Abstract base class
 class Circle {
 protected:
@@ -84,7 +84,38 @@ public:
 
 int main() {
     // sandbox for playing with objects
+    int choice;
+    std::cout <<"Select an object:\n1.Cylinder\n2.Cone\n3.Sphere\nSelect:" << std::endl;
+    std::cin >> choice;
+    std::unique_ptr<Circle> object;
+    // created a smart pointer currently set to nullptr
+    // deleted when the object it points to goes out of scope
+    if (choice == 1) {
+        double cylRadius, cylHeight;
+        std::cout << "Enter cylinder radius:";
+        std::cin >> cylRadius;
+        std::cout << "Enter cylinder height:";
+        std::cin >> cylHeight;
+        object = std::make_unique<Cylinder>(cylRadius, cylHeight);
+    } else if (choice == 2) {
+        double coneRadius, coneHeight;
+        std::cout << "Enter cone radius:";
+        std::cin >> coneRadius;
+        std::cout << "Enter cone height:";
+        std::cin >> coneHeight;
+        object = std::make_unique<Cone>(coneRadius, coneHeight);
+    } else if (choice == 3) {
+        double sphereRadius;
+        std::cout << "Enter sphere radius:";
+        std::cin >> sphereRadius;
+        object = std::make_unique<Sphere>(sphereRadius);
+    } else {
+        std::cout << "Invalid choice!" << std::endl;
+    }
 
+    // Unified interface: we can interact with the object without knowing what shape it took
+    object->calcVolume();
+    std::cout << object->getVolume() << std::endl;
 
     return 0;
 }
